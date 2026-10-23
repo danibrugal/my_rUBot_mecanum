@@ -192,6 +192,8 @@ class HolonomicObstacleWallFollower(Node):
         front_threshold = 1.5 * self.follow_distance
 
         if front_dist < front_threshold or closest == self.FRONT:
+            if self.odom_pose is None:
+                return  # sense /odom no s'inicia la maniobra
             self.state = self.FRONT
             self.front_start_pose = self.odom_pose
             self.passing_short_obstacle = False
@@ -218,7 +220,8 @@ class HolonomicObstacleWallFollower(Node):
         front_dist, _ = measurements[self.FRONT]
         front_threshold = 1.5 * self.follow_distance
 
-        if front_dist >= front_threshold and closest != self.FRONT:
+        if (not self.obstacle_is_long and front_dist >= front_threshold
+                and closest != self.FRONT):
             self.state = self.FRONT_RIGHT
             self.passing_short_obstacle = True
             return
@@ -228,7 +231,7 @@ class HolonomicObstacleWallFollower(Node):
             cmd.linear.x = 0.0
             cmd.linear.y = 0.0
             cmd.angular.z = self.turn_speed
-            if closest == self.RIGHT or measurements[self.RIGHT][0] < self.detection_limit:
+            if closest == self.RIGHT:
                 self.state = self.RIGHT
                 self.obstacle_is_long = False
             return
