@@ -44,11 +44,11 @@ class HolonomicObstacleWallFollower(Node):
         )
         # Forward velocity (m/s).
         self.forward_speed = float(
-            self.declare_parameter('forward_speed', 0.40).value
+            self.declare_parameter('forward_speed', 0.20).value
         )
         # Maximum lateral velocity (m/s).
         self.lateral_speed = float(
-            self.declare_parameter('lateral_speed', 0.40).value
+            self.declare_parameter('lateral_speed', 0.20).value
         )
         # Turn speed and maximum angular correction (rad/s).
         self.turn_speed = float(
